@@ -21,7 +21,7 @@ As gem:
 
 Validating a CPF attribute:
 
-  class Patient
+  class Patient < ActiveRecord::Base
     validates_cpf :cpf_attr
     # or
     validates :cpf_attr, :cpf => true
@@ -29,7 +29,7 @@ Validating a CPF attribute:
 
 Validating a CNPJ attribute:
 
-  class Supplier
+  class Supplier < ActiveRecord::Base
     validates_cnpj :cnpj_attr
     # or
     validates :cnpj_attr, :cnpj => true
@@ -37,7 +37,7 @@ Validating a CNPJ attribute:
 
 Validating an attribute that can store both CPF or CNPJ:
 
-  class Customer
+  class Customer < ActiveRecord::Base
     validates_cpf_or_cnpj :cpf_cnpj_attr
     # or
     validates :cpf_cnpj_attr, :cpf_or_cnpj => true
