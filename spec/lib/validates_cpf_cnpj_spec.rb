@@ -55,6 +55,17 @@ describe ValidatesCpfCnpj do
         person.validates_cpf(:code)
         person.errors.should_not be_empty
       end
+
+      # This numbers will be considered valid by the algorithm but is known as not valid on real world, so they should be blocked
+      blocked_cpfs = %w{12345678909 11111111111 22222222222 33333333333 44444444444 55555555555 66666666666 77777777777 88888888888 99999999999 00000000000}
+
+      blocked_cpfs.each do |cpf|
+        it "is a well know invalid number: #{cpf}" do
+          person = Person.new(:code => cpf)
+          person.validates_cpf(:code)
+          person.errors.should_not be_empty
+        end
+      end
     end
 
     context 'should be valid when' do
