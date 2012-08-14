@@ -194,67 +194,13 @@ describe ValidatesCpfCnpj do
 
     context 'should be invalid when' do
 
-      invalid_numbers = %w{1234567890 12345678901 ABC45678901 123.456.789-01 800337.878-83 800337878-83}
+      invalid_numbers = %w{1234567890 12345678901 ABC45678901 123.456.789-01 800337.878-83 800337878-83 1234567890123 12345678901234 123456789012345 ABC05393625000184 12.345.678/9012-34 05393.625/0001-84 05393.6250001-84}
       invalid_numbers.each do |number|
         it "value is #{number}" do
           person = Person.new(:code => number)
           person.validates_cpf_or_cnpj(:code)
           person.errors.should_not be_empty
         end
-      end
-
-      it 'value is nil' do
-        person = Person.new(:code => nil)
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
-      end
-
-      it 'value is empty' do
-        person = Person.new(:code => '')
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
-      end
-
-      it 'value is 1234567890123' do
-        person = Person.new(:code => '1234567890123')
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
-      end
-
-      it 'value is 12345678901234' do
-        person = Person.new(:code => '12345678901234')
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
-      end
-
-      it 'value is 123456789012345' do
-        person = Person.new(:code => '123456789012345')
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
-      end
-
-      it 'value is ABC05393625000184' do
-        person = Person.new(:code => 'ABC05393625000184')
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
-      end
-
-      it 'value is 12.345.678/9012-34' do
-        person = Person.new(:code => '12.345.678/9012-34')
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
-      end
-
-      it 'value is 05393.625/0001-84' do
-        person = Person.new(:code => '05393.625/0001-84')
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
-      end
-
-      it 'value is 05393.6250001-84' do
-        person = Person.new(:code => '05393.6250001-84')
-        person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
       end
 
       it 'value is nil' do
