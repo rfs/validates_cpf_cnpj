@@ -32,24 +32,18 @@ module ActiveModel
 
     module HelperMethods
       def validates_cpf(*attr_names)
-        configuration = { :on => :save }
-        configuration.update(attr_names.extract_options!)
         raise ArgumentError, "You need to supply at least one attribute" if attr_names.empty?
-        validates_with CpfValidator, _merge_attributes(attr_names).merge(configuration)
+        validates_with CpfValidator, _merge_attributes(attr_names)
       end
 
       def validates_cnpj(*attr_names)
-        configuration = { :on => :save }
-        configuration.update(attr_names.extract_options!)
         raise ArgumentError, "You need to supply at least one attribute" if attr_names.empty?
-        validates_with CnpjValidator, _merge_attributes(attr_names).merge(configuration)
+        validates_with CnpjValidator, _merge_attributes(attr_names)
       end
 
       def validates_cpf_or_cnpj(*attr_names)
-        configuration = { :on => :save }
-        configuration.update(attr_names.extract_options!)
         raise ArgumentError, "You need to supply at least one attribute" if attr_names.empty?
-        validates_with CpfOrCnpjValidator, _merge_attributes(attr_names).merge(configuration)
+        validates_with CpfOrCnpjValidator, _merge_attributes(attr_names)
       end
     end
   end
