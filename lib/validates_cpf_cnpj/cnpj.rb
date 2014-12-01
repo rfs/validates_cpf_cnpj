@@ -1,15 +1,15 @@
 module ValidatesCpfCnpj
   module Cnpj
     def self.valid?(value)
-      value.gsub!(/[^0-9]/, '')
-      digit = value.slice(-2, 2)
+      local_value = value.gsub(/[^0-9]/, '')
+      digit = local_value.slice(-2, 2)
       control = ''
-      if value.size == 14
+      if local_value.size == 14
         factor = 0
         2.times do |i|
           sum = 0;
           12.times do |j|
-            sum += value.slice(j, 1).to_i * ((11 + i - j) % 8 + 2)
+            sum += local_value.slice(j, 1).to_i * ((11 + i - j) % 8 + 2)
           end
           sum += factor * 2 if i == 1
           factor = 11 - sum  % 11
