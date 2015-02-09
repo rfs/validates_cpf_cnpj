@@ -7,14 +7,14 @@
 
 CPF and CNPJ validations for ActiveModel and Rails.
 
-== Installation
+== Install
 
-As gem:
+Include the validades_cpf_cnpj gem in Gemfile to install it.
 
   # in Gemfile
   gem 'validates_cpf_cnpj'
-
-  # Run bundler
+  
+Run bundle from command line
   $ bundle install
 
 == Usage
