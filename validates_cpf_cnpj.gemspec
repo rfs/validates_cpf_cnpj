@@ -5,6 +5,8 @@ require "validates_cpf_cnpj/version"
 Gem::Specification.new do |s|
   s.name        = "validates_cpf_cnpj"
   s.version     = ValidatesCpfCnpj::VERSION
+  s.required_ruby_version = '>= 1.9.3'
+  s.required_rubygems_version = '>= 1.8.11'
   s.authors     = ["Reginaldo Francisco"]
   s.email       = ["naldo_ds@yahoo.com.br"]
   s.homepage    = "http://github.com/rfs/validates_cpf_cnpj"
