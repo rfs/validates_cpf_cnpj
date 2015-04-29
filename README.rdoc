@@ -43,6 +43,14 @@ Validating an attribute that can store both CPF or CNPJ:
     validates :cpf_cnpj_attr, :cpf_or_cnpj => true
   end
 
+Validating a CPF attribute specifing a blacklist:
+
+  class Patient < ActiveRecord::Base
+    validates_cpf :cpf_attr, blacklist: %w(12345678909)
+    # or
+    validates :cpf_attr, :cpf => {blacklist: %w(12345678909)}
+  end
+
 Regular validation options:
 
   :allow_nil   - Allows a nil value to be valid
@@ -50,6 +58,7 @@ Regular validation options:
   :if          - Executes validation when :if evaluates true
   :unless      - Executes validation when :unless evaluates false
   :on          - Specifies validation context (e.g :save, :create or :update). Default is :save
+  :blacklist   - Permit specify a list of well known valid numbers to validate. Default is true
 
 == Contributing
 
@@ -58,6 +67,10 @@ Feel free to fork, fix and send me a pull request.
 == Maintainers
 
 * {Reginaldo Francisco}[http://github.com/rfs]
+
+== Colaborators
+
+* {Rodrigo Panachi}[http://github.com/rpanachi]
 
 == License
 
