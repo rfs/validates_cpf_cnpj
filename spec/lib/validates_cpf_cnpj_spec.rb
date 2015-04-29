@@ -4,7 +4,7 @@ describe ValidatesCpfCnpj do
   describe 'validates_cpf' do
     it 'should raise an ArgumentError when no attribute is informed' do
       person = Person.new
-      lambda { person.validates_cpf }.should raise_exception(ArgumentError, 'You need to supply at least one attribute')
+      expect { person.validates_cpf }.to raise_exception(ArgumentError, 'You need to supply at least one attribute')
     end
 
     context 'should be invalid when' do
@@ -14,20 +14,20 @@ describe ValidatesCpfCnpj do
         it "value is #{cpf}" do
           person = Person.new(:code => cpf)
           person.validates_cpf(:code)
-          person.errors.should_not be_empty
+          expect(person.errors).not_to be_empty
         end
       end
 
       it 'value is nil' do
         person = Person.new(:code => nil)
         person.validates_cpf(:code)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
 
       it 'value is empty' do
         person = Person.new(:code => '')
         person.validates_cpf(:code)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
 
       # This numbers will be considered valid by the algorithm but is known as not valid on real world, so they should be blocked
@@ -37,7 +37,7 @@ describe ValidatesCpfCnpj do
         it "is a well know invalid number: #{cpf}" do
           person = Person.new(:code => cpf)
           person.validates_cpf(:code)
-          person.errors.should_not be_empty
+          expect(person.errors).not_to be_empty
         end
       end
     end
@@ -46,41 +46,41 @@ describe ValidatesCpfCnpj do
       it 'value is 80033787883' do
         person = Person.new(:code => '80033787883')
         person.validates_cpf(:code)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is 800.337.878-83' do
         person = Person.new(:code => '800.337.878-83')
         person.validates_cpf(:code)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is nil and :allow_nil or :allow_blank is true' do
         person = Person.new(:code => nil)
         person.validates_cpf(:code, :allow_nil => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
         person.validates_cpf(:code, :allow_blank => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is empty and :allow_blank is true' do
         person = Person.new(:code => '')
         person.validates_cpf(:code, :allow_blank => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
         person.validates_cpf(:code, :allow_nil => true)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
 
       it ':if option evaluates false' do
         person = Person.new(:code => '12345678901')
         person.validates_cpf(:code, :if => false)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':unless option evaluates true' do
         person = Person.new(:code => '12345678901')
         person.validates_cpf(:code, :unless => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':on option is :create and the model instance is not a new record' do
@@ -94,7 +94,7 @@ describe ValidatesCpfCnpj do
       it ':on option is :update and the model instance is a new record' do
         person = Person.new(:code => '12345678901')
         person.validates_cpf(:code, :on => :update)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
     end
   end
@@ -102,7 +102,7 @@ describe ValidatesCpfCnpj do
   describe 'validates_cnpj' do
     it 'should raise an ArgumentError when no attribute is informed' do
       person = Person.new
-      lambda { person.validates_cnpj }.should raise_exception(ArgumentError, 'You need to supply at least one attribute')
+      expect { person.validates_cnpj }.to raise_exception(ArgumentError, 'You need to supply at least one attribute')
     end
 
     context 'should be invalid when' do
@@ -113,20 +113,20 @@ describe ValidatesCpfCnpj do
         it "value is #{cnpj}" do
           person = Person.new(:code => cnpj)
           person.validates_cnpj(:code)
-          person.errors.should_not be_empty
+          expect(person.errors).not_to be_empty
         end
       end
 
       it 'value is nil' do
         person = Person.new(:code => nil)
         person.validates_cnpj(:code)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
 
       it 'value is empty' do
         person = Person.new(:code => '')
         person.validates_cnpj(:code)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
     end
 
@@ -134,41 +134,41 @@ describe ValidatesCpfCnpj do
       it 'value is 05393625000184' do
         person = Person.new(:code => '05393625000184')
         person.validates_cnpj(:code)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is 05.393.625/0001-84' do
         person = Person.new(:code => '05.393.625/0001-84')
         person.validates_cnpj(:code)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is nil and :allow_nil or :allow_blank is true' do
         person = Person.new(:code => nil)
         person.validates_cnpj(:code, :allow_nil => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
         person.validates_cnpj(:code, :allow_blank => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is empty and :allow_blank is true' do
         person = Person.new(:code => '')
         person.validates_cnpj(:code, :allow_blank => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
         person.validates_cnpj(:code, :allow_nil => true)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
 
       it ':if option evaluates false' do
         person = Person.new(:code => '12345678901234')
         person.validates_cnpj(:code, :if => false)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':unless option evaluates true' do
         person = Person.new(:code => '12345678901234')
         person.validates_cnpj(:code, :unless => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':on option is :create and the model instance is not a new record' do
@@ -182,7 +182,7 @@ describe ValidatesCpfCnpj do
       it ':on option is :update and the model instance is a new record' do
         person = Person.new(:code => '12345678901')
         person.validates_cnpj(:code, :on => :update)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
     end
   end
@@ -190,7 +190,7 @@ describe ValidatesCpfCnpj do
   describe 'validates_cpf_or_cnpj' do
     it 'should raise an ArgumentError when no attribute is informed' do
       person = Person.new
-      lambda { person.validates_cpf_or_cnpj }.should raise_exception(ArgumentError, 'You need to supply at least one attribute')
+      expect { person.validates_cpf_or_cnpj }.to raise_exception(ArgumentError, 'You need to supply at least one attribute')
     end
 
     context 'should be invalid when' do
@@ -200,20 +200,20 @@ describe ValidatesCpfCnpj do
         it "value is #{number}" do
           person = Person.new(:code => number)
           person.validates_cpf_or_cnpj(:code)
-          person.errors.should_not be_empty
+          expect(person.errors).not_to be_empty
         end
       end
 
       it 'value is nil' do
         person = Person.new(:code => nil)
         person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
 
       it 'value is empty' do
         person = Person.new(:code => '')
         person.validates_cpf_or_cnpj(:code)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
     end
 
@@ -221,41 +221,41 @@ describe ValidatesCpfCnpj do
       it 'value is 80033787883' do
         person = Person.new(:code => '80033787883')
         person.validates_cpf_or_cnpj(:code)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is 800.337.878-83' do
         person = Person.new(:code => '800.337.878-83')
         person.validates_cpf_or_cnpj(:code)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is nil and :allow_nil or :allow_blank is true' do
         person = Person.new(:code => nil)
         person.validates_cpf_or_cnpj(:code, :allow_nil => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
         person.validates_cpf_or_cnpj(:code, :allow_blank => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is empty and :allow_blank is true' do
         person = Person.new(:code => '')
         person.validates_cpf_or_cnpj(:code, :allow_blank => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
         person.validates_cpf_or_cnpj(:code, :allow_nil => true)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
 
       it ':if option evaluates false' do
         person = Person.new(:code => '12345678901')
         person.validates_cpf_or_cnpj(:code, :if => false)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':unless option evaluates true' do
         person = Person.new(:code => '12345678901')
         person.validates_cpf_or_cnpj(:code, :unless => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':on option is :create and the model instance is not a new record' do
@@ -269,47 +269,47 @@ describe ValidatesCpfCnpj do
       it ':on option is :update and the model instance is a new record' do
         person = Person.new(:code => '12345678901')
         person.validates_cpf_or_cnpj(:code, :on => :update)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is 05393625000184' do
         person = Person.new(:code => '05393625000184')
         person.validates_cpf_or_cnpj(:code)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is 05.393.625/0001-84' do
         person = Person.new(:code => '05.393.625/0001-84')
         person.validates_cpf_or_cnpj(:code)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is nil and :allow_nil or :allow_blank is true' do
         person = Person.new(:code => nil)
         person.validates_cpf_or_cnpj(:code, :allow_nil => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
         person.validates_cpf_or_cnpj(:code, :allow_blank => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it 'value is empty and :allow_blank is true' do
         person = Person.new(:code => '')
         person.validates_cpf_or_cnpj(:code, :allow_blank => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
         person.validates_cpf_or_cnpj(:code, :allow_nil => true)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
 
       it ':if option evaluates false' do
         person = Person.new(:code => '12345678901234')
         person.validates_cpf_or_cnpj(:code, :if => false)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':unless option evaluates true' do
         person = Person.new(:code => '12345678901234')
         person.validates_cpf_or_cnpj(:code, :unless => true)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':on option is :create and the model instance is not a new record' do
@@ -323,7 +323,7 @@ describe ValidatesCpfCnpj do
       it ':on option is :update and the model instance is a new record' do
         person = Person.new(:code => '12345678901')
         person.validates_cpf_or_cnpj(:code, :on => :update)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
     end
   end
