@@ -9,7 +9,7 @@ describe ValidatesCpfCnpj do
 
     context 'should be invalid when' do
       invalid_cpfs = %w{1234567890 12345678901 ABC45678901 123.456.789-01 800337.878-83 800337878-83}
-      
+
       invalid_cpfs.each do |cpf|
         it "value is #{cpf}" do
           person = Person.new(:code => cpf)
@@ -85,9 +85,10 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        expect(person).to receive(:new_record?).and_return(false)
+
         person.validates_cpf(:code, :on => :create)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':on option is :update and the model instance is a new record' do
@@ -115,7 +116,6 @@ describe ValidatesCpfCnpj do
           person.errors.should_not be_empty
         end
       end
-      
 
       it 'value is nil' do
         person = Person.new(:code => nil)
@@ -173,9 +173,10 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        expect(person).to receive(:new_record?).and_return(false)
+
         person.validates_cnpj(:code, :on => :create)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':on option is :update and the model instance is a new record' do
@@ -259,9 +260,10 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        expect(person).to receive(:new_record?).and_return(false)
+
         person.validates_cpf_or_cnpj(:code, :on => :create)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':on option is :update and the model instance is a new record' do
@@ -312,9 +314,10 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        expect(person).to receive(:new_record?).and_return(false)
+
         person.validates_cpf_or_cnpj(:code, :on => :create)
-        person.errors.should be_empty
+        expect(person.errors).to be_empty
       end
 
       it ':on option is :update and the model instance is a new record' do
