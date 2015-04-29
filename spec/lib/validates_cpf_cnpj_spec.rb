@@ -29,17 +29,57 @@ describe ValidatesCpfCnpj do
         person.validates_cpf(:code)
         expect(person.errors).not_to be_empty
       end
+    end
+
+    context 'blacklisted numbers' do
 
       # This numbers will be considered valid by the algorithm but is known as not valid on real world, so they should be blocked
       blocked_cpfs = %w{12345678909 11111111111 22222222222 33333333333 44444444444 55555555555 66666666666 77777777777 88888888888 99999999999 00000000000}
 
-      blocked_cpfs.each do |cpf|
-        it "is a well know invalid number: #{cpf}" do
-          person = Person.new(:code => cpf)
-          person.validates_cpf(:code)
-          expect(person.errors).not_to be_empty
+      context 'with blacklist: true option' do
+        blocked_cpfs.each do |cpf|
+          it "should be invalid for the well know invalid number: #{cpf}" do
+            person = Person.new(:code => cpf)
+            person.validates_cpf(:code)
+
+            expect(person.errors).not_to be_empty
+          end
         end
       end
+
+      context 'with blacklist: false option' do
+        blocked_cpfs.each do |cpf|
+          it "should be valid for the well know invalid number: #{cpf}" do
+            person = Person.new(:code => cpf)
+            person.validates_cpf(:code, blacklist: false)
+
+            expect(person.errors).to be_empty
+          end
+        end
+      end
+
+      context 'with blacklist: array option with well know numbers' do
+        blocked_cpfs.each do |cpf|
+          it "should be invalid for the well know invalid number: #{cpf}" do
+            person = Person.new(:code => cpf)
+            person.validates_cpf(:code, blacklist: blocked_cpfs)
+
+            expect(person.errors).to_not be_empty
+          end
+        end
+      end
+
+      context 'with blacklist: lambda option validation well know numbers' do
+        blocked_cpfs.each do |cpf|
+          it "should be invalid for the well know invalid number: #{cpf}" do
+            person = Person.new(:code => cpf)
+            person.validates_cpf(:code, blacklist: lambda { |value| blocked_cpfs.member?(value) })
+
+            expect(person.errors).to_not be_empty
+          end
+        end
+      end
+
     end
 
     context 'should be valid when' do
