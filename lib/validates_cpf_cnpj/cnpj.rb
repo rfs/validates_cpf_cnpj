@@ -1,7 +1,7 @@
 module ValidatesCpfCnpj
   module Cnpj
-    def self.valid?(value)
-      value.gsub!(/[^0-9]/, '')
+    def self.valid?(original_value)
+      value = original_value.gsub(/[^0-9]/, '')
       digit = value.slice(-2, 2)
       control = ''
       if value.size == 14
