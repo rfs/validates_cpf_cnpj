@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
   s.add_development_dependency "activerecord"
+  s.add_development_dependency "sqlite3"
 
   s.add_runtime_dependency "activemodel", ">= 3.0.0"
 end
