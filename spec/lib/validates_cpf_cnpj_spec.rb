@@ -85,7 +85,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        person.stub(:new_record?).and_return(false)
         person.validates_cpf(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -173,7 +173,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        person.stub(:new_record?).and_return(false)
         person.validates_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -259,7 +259,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        person.stub(:new_record?).and_return(false)
         person.validates_cpf_or_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -312,7 +312,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        person.stub(:new_record?).and_return(false)
         person.validates_cpf_or_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end
