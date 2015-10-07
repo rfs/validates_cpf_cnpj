@@ -8,7 +8,6 @@ module ActiveModel
       include ValidatesCpfCnpj
 
       def validate_each(record, attr_name, value)
-        puts "#{}"
         return if should_skip?(record, attr_name, value)
         if value.to_s.gsub(/[^0-9]/, '').length <= 11
           validate_only_cpf(record, attr_name, value)
