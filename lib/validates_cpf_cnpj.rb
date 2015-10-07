@@ -8,6 +8,7 @@ module ActiveModel
       include ValidatesCpfCnpj
 
       def validate_each(record, attr_name, value)
+        puts "#{}"
         return if should_skip?(record, attr_name, value)
         if value.to_s.gsub(/[^0-9]/, '').length <= 11
           validate_only_cpf(record, attr_name, value)
@@ -33,6 +34,7 @@ module ActiveModel
         if (not value.to_s.match(/\A\d{11}\z/) and not value.to_s.match(/\A\d{3}\.\d{3}\.\d{3}\-\d{2}\z/)) or not Cpf.valid?(value)
           record.errors.add(attr_name)
         end
+        normalize_cpf(record, attr_name, value)
       end
 
       def validate_only_cnpj(record, attr_name, value)
@@ -40,6 +42,7 @@ module ActiveModel
         if (not value.to_s.match(/\A\d{14}\z/) and not value.to_s.match(/\A\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}\z/)) or not Cnpj.valid?(value)
           record.errors.add(attr_name)
         end
+        normalize_cnpj(record, attr_name, value)
       end
 
       def normalize_cpf(record, attr_name, value)
