@@ -40,6 +40,12 @@ describe ValidatesCpfCnpj do
           person.errors.should_not be_empty
         end
       end
+
+      it 'value is a cnpj' do
+        person = Person.new(:code => '05.393.625/0001-84')
+        person.validates_cpf(:code)
+        person.errors.should_not be_empty
+      end
     end
 
     context 'should be valid when' do
@@ -85,7 +91,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        person.stub(:new_record?).and_return(false)
         person.validates_cpf(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -125,6 +131,12 @@ describe ValidatesCpfCnpj do
 
       it 'value is empty' do
         person = Person.new(:code => '')
+        person.validates_cnpj(:code)
+        person.errors.should_not be_empty
+      end
+
+      it 'value is a cpf' do
+        person = Person.new(:code => '800.337.878-83')
         person.validates_cnpj(:code)
         person.errors.should_not be_empty
       end
@@ -173,7 +185,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        person.stub(:new_record?).and_return(false)
         person.validates_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -259,7 +271,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        person.stub(:new_record?).and_return(false)
         person.validates_cpf_or_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -312,7 +324,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        person.stub(:new_record?).and_return(false)
         person.validates_cpf_or_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end
