@@ -106,7 +106,7 @@ describe ValidatesCpfCnpj do
 
     context 'should be invalid when' do
 
-      invalid_cnpjs = %w{1234567890123 12345678901234 123456789012345 ABC05393625000184 12.345.678/9012-34 05393.625/0001-84 05393.6250001-84}
+      invalid_cnpjs = %w{1234567890123 12345678901234 123456789012345 ABC05393625000184 12.345.678/9012-34 05393.625/0001-84 05393.6250001-84 00.000.000/0000-00}
 
       invalid_cnpjs.each do |cnpj|
         it "value is #{cnpj}" do
@@ -116,7 +116,15 @@ describe ValidatesCpfCnpj do
         end
       end
       
-
+      all_equal_chars_cnpjs = %w{11111111111111 22222222222222 33333333333333 44444444444444 55555555555555 66666666666666 77777777777777 88888888888888 99999999999999 00000000000000}
+      all_equal_chars_cnpjs.each do |cnpj|
+        it "value is #{cnpj}" do
+          person = Person.new(:code => cnpj)
+          person.validates_cnpj(:code)
+          person.errors.should_not be_empty
+        end
+      end
+      
       it 'value is nil' do
         person = Person.new(:code => nil)
         person.validates_cnpj(:code)
