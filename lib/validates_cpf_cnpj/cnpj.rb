@@ -3,7 +3,7 @@ module ValidatesCpfCnpj
     def self.valid?(value)
       value.gsub!(/[^0-9]/, '')
       
-      fourteen_plus_equal_characters_regexp = \A(\d)\1{13,}\z
+      fourteen_plus_equal_characters_regexp = /\A(\d)\1{13,}\z/
       return false if value =~ fourteen_plus_equal_characters_regexp
       
       digit = value.slice(-2, 2)
