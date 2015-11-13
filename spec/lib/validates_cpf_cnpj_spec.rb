@@ -9,7 +9,7 @@ describe ValidatesCpfCnpj do
 
     context 'should be invalid when' do
       invalid_cpfs = %w{1234567890 12345678901 ABC45678901 123.456.789-01 800337.878-83 800337878-83}
-      
+
       invalid_cpfs.each do |cpf|
         it "value is #{cpf}" do
           person = Person.new(:code => cpf)
@@ -85,7 +85,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        allow(person).to receive(:new_record?).and_return(false)
         person.validates_cpf(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -115,7 +115,7 @@ describe ValidatesCpfCnpj do
           person.errors.should_not be_empty
         end
       end
-      
+
       all_equal_chars_cnpjs = %w{11111111111111 22222222222222 33333333333333 44444444444444 55555555555555 66666666666666 77777777777777 88888888888888 99999999999999 00000000000000}
       all_equal_chars_cnpjs.each do |cnpj|
         it "value is #{cnpj}" do
@@ -124,7 +124,7 @@ describe ValidatesCpfCnpj do
           person.errors.should_not be_empty
         end
       end
-      
+
       it 'value is nil' do
         person = Person.new(:code => nil)
         person.validates_cnpj(:code)
@@ -181,7 +181,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        allow(person).to receive(:new_record?).and_return(false)
         person.validates_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -191,6 +191,15 @@ describe ValidatesCpfCnpj do
         person.validates_cnpj(:code, :on => :update)
         person.errors.should be_empty
       end
+    end
+  end
+
+  describe 'custom messages' do
+    it 'should add custom message to the error messages when it is present' do
+      person = Person.new(:code => '123')
+      person.validates_cnpj(:code, :message => 'doesnt fit our CNPJ standards')
+      person.errors.should_not be_empty
+      person.errors.messages[:code].should include 'doesnt fit our CNPJ standards'
     end
   end
 
@@ -267,7 +276,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        allow(person).to receive(:new_record?).and_return(false)
         person.validates_cpf_or_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end
@@ -320,7 +329,7 @@ describe ValidatesCpfCnpj do
 
       it ':on option is :create and the model instance is not a new record' do
         person = Person.new(:code => '12345678901')
-        person.stub!(:new_record?, false)
+        allow(person).to receive(:new_record?).and_return(false)
         person.validates_cpf_or_cnpj(:code, :on => :create)
         person.errors.should be_empty
       end

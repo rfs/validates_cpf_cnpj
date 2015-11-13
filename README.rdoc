@@ -50,6 +50,7 @@ Regular validation options:
   :if          - Executes validation when :if evaluates true
   :unless      - Executes validation when :unless evaluates false
   :on          - Specifies validation context (e.g :save, :create or :update). Default is :save
+  :message     - Sets a custom message to be passed to the attribute (default is 'is invalid')
 
 == Contributing
 
