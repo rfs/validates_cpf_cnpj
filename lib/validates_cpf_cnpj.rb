@@ -6,20 +6,31 @@ module ActiveModel
   module Validations
     class CpfOrCnpjValidator < ActiveModel::EachValidator
       include ValidatesCpfCnpj
+      
+      ELEVEN_DIGITS_REGEXP = /\A\d{11}\z/
+      FOURTEEN_DIGITS_REGEXP = /\A\d{14}\z/
+      CPF_FORMAT_REGEXP = /\A\d{3}\.\d{3}\.\d{3}\-\d{2}\z/
+      CNPJ_FORMAT_REGEXP = /\A\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}\z/
+      NOT_DIGITS_REGEXP = /[^0-9]/
 
       def validate_each(record, attr_name, value)
         return if (options[:allow_nil] and value.nil?) or (options[:allow_blank] and value.blank?)
         return if (options[:if] == false) or (options[:unless] == true)
         return if (options[:on].to_s == 'create' and not record.new_record?) or (options[:on].to_s == 'update' and record.new_record?)
-
-        if value.to_s.gsub(/[^0-9]/, '').length <= 11
-          if (not value.to_s.match(/\A\d{11}\z/) and not value.to_s.match(/\A\d{3}\.\d{3}\.\d{3}\-\d{2}\z/)) or not Cpf.valid?(value)
-            record.errors.add(attr_name)
-          end
+        
+        inside_cpf_length = value.to_s.gsub(NOT_DIGITS_REGEXP, '').length <= 11
+        invalid_cpf_format = not value.to_s.match(ELEVEN_DIGITS_REGEXP) and not value.to_s.match(CPF_FORMAT_REGEXP))
+        invalid_cnpj_format = not value.to_s.match(FOURTEEN_DIGITS_REGEXP) and not value.to_s.match(CNPJ_FORMAT_REGEXP))
+        
+        value_is_invalid = inside_cpf_length && (invalid_cpf_format or not Cpf.valid?(value))
+        value_is_invalid |= !inside_cpf_length && (invalid_cnpj_format or not Cnpj.valid?(value))
+        
+        return unless value_is_invalid
+        
+        if options[:message]
+          record.errors.add(attr_name, options[:message])
         else
-          if (not value.to_s.match(/\A\d{14}\z/) and not value.to_s.match(/\A\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}\z/)) or not Cnpj.valid?(value)
-            record.errors.add(attr_name)
-          end
+          record.errors.add(attr_name)
         end
       end
     end
