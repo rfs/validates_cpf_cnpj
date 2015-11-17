@@ -7,6 +7,12 @@ describe ValidatesCpfCnpj do
       expect { person.validates_cpf }.to raise_exception(ArgumentError, 'You need to supply at least one attribute')
     end
 
+    it 'should return a formatted CPF if the value is valid' do
+      person = Person.new(:code => '80033787883')
+      person.validates_cpf(:code)
+      expect(person.code).to eq '800.337.878-83'
+    end
+
     context 'should be invalid when' do
       invalid_cpfs = %w{1234567890 12345678901 ABC45678901 123.456.789-01 800337.878-83 800337878-83}
 
@@ -110,8 +116,13 @@ describe ValidatesCpfCnpj do
       expect { person.validates_cnpj }.to raise_exception(ArgumentError, 'You need to supply at least one attribute')
     end
 
-    context 'should be invalid when' do
+    it 'should return a formatted CNPJ if the value is valid' do
+      person = Person.new(:code => '05393625000184')
+      person.validates_cnpj(:code)
+      expect(person.code).to eq '05.393.625/0001-84'
+    end
 
+    context 'should be invalid when' do
       invalid_cnpjs = %w{1234567890123 12345678901234 123456789012345 ABC05393625000184 12.345.678/9012-34 05393.625/0001-84 05393.6250001-84 00.000.000/0000-00}
 
       invalid_cnpjs.each do |cnpj|

@@ -11,12 +11,12 @@ module ActiveModel
       FOURTEEN_DIGITS_REGEXP = /\A\d{14}\z/
       CPF_FORMAT_REGEXP = /\A\d{3}\.\d{3}\.\d{3}\-\d{2}\z/
       CNPJ_FORMAT_REGEXP = /\A\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}\z/
-      NOT_DIGITS_REGEXP = /[^0-9]/
+      NON_DIGITS_REGEXP = /[^0-9]/
 
       def validate_each(record, attr_name, value)
         return if should_skip?(record, attr_name, value)
 
-        inside_cpf_length = value.to_s.gsub(NOT_DIGITS_REGEXP, '').length <= 11
+        inside_cpf_length = value.to_s.gsub(NON_DIGITS_REGEXP, '').length <= 11
 
         if inside_cpf_length
           validate_only_cpf(record, attr_name, value)
@@ -38,16 +38,22 @@ module ActiveModel
         return if should_skip?(record, attr_name, value)
         valid_cpf_format = value.to_s.match(ELEVEN_DIGITS_REGEXP) || value.to_s.match(CPF_FORMAT_REGEXP)
 
-        add_error(record, attr_name) if !(valid_cpf_format && Cpf.valid?(value))
-        normalize_cpf(record, attr_name, value)
+        if (valid_cpf_format && Cpf.valid?(value))
+          format_cpf(record, attr_name, value)
+        else
+          add_error(record, attr_name)
+        end
       end
 
       def validate_only_cnpj(record, attr_name, value)
         return if should_skip?(record, attr_name, value)
         valid_cnpj_format = value.to_s.match(FOURTEEN_DIGITS_REGEXP) || value.to_s.match(CNPJ_FORMAT_REGEXP)
 
-        add_error(record, attr_name) if !(valid_cnpj_format && Cnpj.valid?(value))
-        normalize_cnpj(record, attr_name, value)
+        if (valid_cnpj_format && Cnpj.valid?(value))
+          format_cnpj(record, attr_name, value)
+        else
+          add_error(record, attr_name)
+        end
       end
 
       def add_error(record, attr_name)
@@ -58,14 +64,16 @@ module ActiveModel
         end
       end
 
-      def normalize_cpf(record, attr_name, value)
+      def format_cpf(record, attr_name, value)
         return unless value
+        value.gsub!(NON_DIGITS_REGEXP, '')
         formatted_value = "#{value[0..2]}.#{value[3..5]}.#{value[6..8]}-#{value[9..10]}"
         record.send("#{attr_name}=", formatted_value)
       end
 
-      def normalize_cnpj(record, attr_name, value)
+      def format_cnpj(record, attr_name, value)
         return unless value
+        value.gsub!(NON_DIGITS_REGEXP, '')
         formatted_value = "#{value[0..1]}.#{value[2..4]}.#{value[5..7]}/#{value[8..11]}-#{value[12..13]}"
         record.send("#{attr_name}=", formatted_value)
       end

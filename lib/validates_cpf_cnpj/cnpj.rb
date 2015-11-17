@@ -1,12 +1,14 @@
 module ValidatesCpfCnpj
   module Cnpj
+    NON_DIGITS_REGEXP = /[^0-9]/
+    FOURTEEN_PLUS_EQUAL_CHARACTERS_REGEXP = /\A(\d)\1{13,}\z/
+
     def self.valid?(value)
-      value_only_digits = value.gsub(/[^0-9]/, '')
+      value_only_digits = value.gsub(NON_DIGITS_REGEXP, '')
 
-      fourteen_plus_equal_characters_regexp = /\A(\d)\1{13,}\z/
-      return false if value_only_digits =~ fourteen_plus_equal_characters_regexp
+      return false if value_only_digits =~ FOURTEEN_PLUS_EQUAL_CHARACTERS_REGEXP
 
-      digit = value.slice(-2, 2)
+      digit = value_only_digits.slice(-2, 2)
       control = ''
       if value_only_digits.size == 14
         factor = 0
