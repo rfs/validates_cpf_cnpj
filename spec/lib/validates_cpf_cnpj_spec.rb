@@ -50,7 +50,7 @@ describe ValidatesCpfCnpj do
       it 'value is a cnpj' do
         person = Person.new(:code => '05.393.625/0001-84')
         person.validates_cpf(:code)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
     end
 
@@ -154,10 +154,16 @@ describe ValidatesCpfCnpj do
         expect(person.errors).not_to be_empty
       end
 
+      it 'value is incompletelly formatted' do
+        person = Person.new(:code => '00105063/000102')
+        person.validates_cnpj(:code)
+        expect(person.errors).not_to be_empty
+      end
+
       it 'value is a cpf' do
         person = Person.new(:code => '800.337.878-83')
         person.validates_cnpj(:code)
-        person.errors.should_not be_empty
+        expect(person.errors).not_to be_empty
       end
     end
 
@@ -221,8 +227,8 @@ describe ValidatesCpfCnpj do
     it 'should add custom message to the error messages when it is present' do
       person = Person.new(:code => '123')
       person.validates_cnpj(:code, :message => 'doesnt fit our CNPJ standards')
-      person.errors.should_not be_empty
-      person.errors.messages[:code].should include 'doesnt fit our CNPJ standards'
+      expect(person.errors).not_to be_empty
+      expect(person.errors.messages[:code]).to include 'doesnt fit our CNPJ standards'
     end
   end
 
