@@ -50,6 +50,14 @@ Regular validation options:
   :if          - Executes validation when :if evaluates true
   :unless      - Executes validation when :unless evaluates false
   :on          - Specifies validation context (e.g :save, :create or :update). Default is :save
+  :message     - Sets a custom message to be passed to the attribute (default is 'is invalid')
+
+CPF and CNPJ formatting:
+
+  When you run the validation on an attribute, if the value is a valid CPF or CNPJ, it will be formatted as so:
+  - valid CPF will be returned as 999.999.999-99
+  - valid CNPJ will be returned as 99.999.999/9999-99
+
 
 == Contributing
 
